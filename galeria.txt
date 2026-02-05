@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galeria 💖</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(to bottom, #ff9ecf, #ff4d88);
+    color: white;
+}
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+.gallery img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 15px;
+    transition: transform 0.3s;
+}
+.gallery img:active {
+    transform: scale(1.8);
+}
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    background: #00c853;
+    color: white;
+}
+</style>
+</head>
+<body>
+
+<h1>Nasze wspomnienia 💞</h1>
+<div class="gallery">
+    <img src="zdjecie1.jpg">
+    <img src="zdjecie2.jpg">
+    <img src="zdjecie3.jpg">
+</div>
+
+<button onclick="window.location.href='index.html'">Powrót 💖</button>
+
+</body>
+</html>

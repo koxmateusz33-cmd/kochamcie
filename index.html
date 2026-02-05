@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💖 Walentynki</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff4d88, #ff9ecf);
+    color: white;
+    overflow-x: hidden;
+}
+
+.screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    transform: scale(0.95);
+}
+
+h1 {
+    animation: fadeUp 1s ease;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+button {
+    padding: 14px 30px;
+    font-size: 18px;
+    margin: 10px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.yes {
+    background: #00c853;
+    color: white;
+}
+
+.no {
+    background: #d50000;
+    color: white;
+    position: relative;
+}
+
+.gallery {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.gallery img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 15px;
+    transition: transform 0.3s;
+}
+
+.gallery img:active {
+    transform: scale(1.8);
+    z-index: 10;
+}
+
+.music {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(0,0,0,0.3);
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* SERCA */
+@keyframes fall {
+    to { transform: translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- EKRAN 1 -->
+<div class="screen" id="screen1">
+    <h1>Zostaniesz moją Walentynką? 💘</h1>
+<p id="countdown" style="font-size:18px; margin-top:10px;"></p>
+<div id="pulsHeart">💖</div>
+<button onclick="window.location.href='galeria.html'">Zobacz galerie 💞</button>
+
+    <div class="gallery">
+        <img src="zdjecie4.jpg">
+        <img src="zdjecie5.jpg">
+        <img src="zdjecie6.jpg">
+    </div>
+
+    <p id="counter">Kliknięć NIE: 0</p>
+
+    <div>
+        <button class="yes" onclick="yes()">Tak 💖</button>
+        <button class="no" onclick="nope(this)">Nie 😢</button>
+    </div>
+</div>
+
+<!-- EKRAN 2 -->
+<div class="screen hidden" id="screen2">
+    <h1>Wiedziałem 💞</h1>
+    <p>Patisiu ❤️</p>
+    <p> 14.09.2025 - 14.02.2026 💕</p>
+</div>
+
+<!-- MUZYKA -->
+<audio id="music" loop>
+    <source src="muzyka.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music" onclick="toggleMusic()">🎵 Muzyka</div>
+
+<script>
+/* MUZYKA */
+let playing = false;
+function toggleMusic() {
+    const m = document.getElementById("music");
+    if (!playing) {
+        m.play();
+        playing = true;
+    } else {
+        m.pause();
+        playing = false;
+    }
+}
+
+/* NIE */
+let size = 18;
+let count = 0;
+const texts = ["Na pewno? 😢", "Ej nooo 🥺", "Jeszcze raz 💔", "SAD 😭"];
+
+function nope(btn) {
+    count++;
+    document.getElementById("counter").innerText =
+        "Kliknięć NIE: " + count;
+
+    size -= 2;
+    btn.style.fontSize = size + "px";
+    btn.innerText = texts[Math.floor(Math.random() * texts.length)];
+    btn.style.position = "absolute";
+    btn.style.top = Math.random() * 80 + "%";
+    btn.style.left = Math.random() * 60 + "%";
+
+    if (size <= 8) btn.style.display = "none";
+}
+
+/* TAK + PRZEJŚCIE + EKSPLOZJA */
+function yes() {
+    document.getElementById("screen1").classList.add("hidden");
+    document.getElementById("screen2").classList.remove("hidden");
+    explode();
+}
+
+/* EKSPLOZJA SERC */
+function explode() {
+    for (let i = 0; i < 30; i++) {
+        const h = document.createElement("div");
+        h.innerHTML = "💖";
+        h.style.position = "fixed";
+        h.style.left = "50%";
+        h.style.top = "50%";
+        h.style.fontSize = "20px";
+        h.style.transform =
+            `translate(-50%, -50%) translate(${Math.random()*300-150}px, ${Math.random()*300-150}px)`;
+        h.style.transition = "1s";
+        document.body.appendChild(h);
+
+        setTimeout(() => h.remove(), 1000);
+    }
+}
+
+/* SPA DAJĄCE SERCA */
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.innerHTML = "💖";
+    heart.style.position = "fixed";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.top = "-20px";
+    heart.style.fontSize = "18px";
+    heart.style.animation = "fall 4s linear";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 4000);
+}, 600);
+</script>
+
+<script>
+const targetDate = new Date("February 14, 2026 00:00:00").getTime();
+
+function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    if (distance < 0) {
+        document.getElementById("countdown").innerHTML =
+            "To już dziś! 💞";
+        return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML =
+        "Do 14.02.2026 zostało: " +
+        days + " dni " +
+        hours + "h " +
+        minutes + "m " +
+        seconds + "s 💕";
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+
+<script>
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.innerHTML = "💖";
+    heart.style.position = "fixed";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.top = "-20px";
+    heart.style.fontSize = Math.random()*20 + 15 + "px";
+    heart.style.opacity = Math.random();
+    heart.style.transition = "2s linear";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.style.top = "110vh";
+    }, 10);
+
+    setTimeout(() => heart.remove(), 3000);
+}, 400);
+</script>
+
+
+</body>
+
+
+</html>
